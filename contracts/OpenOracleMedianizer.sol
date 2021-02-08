@@ -26,6 +26,10 @@ contract OpenOracleMedianizer {
         uint weight;
     }
 
+    function repoterCount() external view returns (uint) {
+        return reporters.length;
+    }
+
     function price(string memory symbol) external view returns (uint) {
         uint reporterLength = reporters.length;
         uint tupleLength = 0;
@@ -42,6 +46,7 @@ contract OpenOracleMedianizer {
                 tupleLength++;
             }
         }
+        require(tupleLength != 0, 'no-valid-price-data');
         for (uint i = 0; i < tupleLength-1; i++) {
             for (uint j = 0; j < tupleLength-i-1; j++) {
                 if (tuples[j].weight > tuples[j+1].weight) {
@@ -62,7 +67,7 @@ contract OpenOracleMedianizer {
         assert(false);
     }
 
-    function postPrices(bytes[] calldata messages, bytes[] calldata signatures, string[] calldata symbols) external {
+    function postPrices(bytes[] calldata messages, bytes[] calldata signatures) external {
         require(messages.length == signatures.length, 'inconsistent-length');
         for (uint i = 0; i < messages.length; i++) {
             priceData.put(messages[i], signatures[i]);
