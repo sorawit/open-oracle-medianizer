@@ -39,6 +39,10 @@ contract OpenOraclePriceData is OpenOracleData {
         return putInternal(source, timestamp, key, value);
     }
 
+    function putBySender(address source, uint64 timestamp, string memory key, uint64 value) external returns (string memory) {
+        return putInternal(source, timestamp, key, value);
+    }    
+
     function putInternal(address source, uint64 timestamp, string memory key, uint64 value) internal returns (string memory) {
         // Only update if newer than stored, according to source
         Datum storage prior = data[source][key];
