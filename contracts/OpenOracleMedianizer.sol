@@ -53,14 +53,14 @@ contract OpenOracleMedianizer {
                 tuples[tupleLength].weight = weight;
                 totalWeight = totalWeight.add(weight);
                 tupleLength++;
-            }            
+            }
         }
         require(tupleLength != 0, "no-valid-price-data");
         for (uint256 i = 0; i < tupleLength - 1; i++) {
-            for (uint256 j = 0; j < tupleLength - i - 1; j++) {
-                if (tuples[j].weight > tuples[j + 1].weight) {
-                    Tuple memory temp = tuples[i];
-                    tuples[i] = tuples[j];
+            for (uint256 j = 0; j < tupleLength - 1; j++) {
+                if (tuples[j].price > tuples[j + 1].price) {
+                    Tuple memory temp = tuples[j + 1];
+                    tuples[j + 1] = tuples[j];
                     tuples[j] = temp;
                 }
             }

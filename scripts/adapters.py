@@ -1,7 +1,15 @@
+from brownie import (
+    accounts,
+    chain,
+    BandAdapter,
+    ChainlinkAdapter,
+    Keep3rAdapter,
+    OpenOraclePriceData,
+    OpenOracleMedianizer,
+)
 from eth_account import Account, messages
 from eth_abi import encode_abi
 from eth_utils import keccak
-from brownie import chain
 
 REPORTS = [
     {
@@ -87,37 +95,53 @@ def generate_signature(symbol, timestamp, value, private_key):
     )
 
 
-def test_weighted_median(a, OpenOraclePriceData, OpenOracleMedianizer):
-    p = OpenOraclePriceData.deploy({"from": a[0]})
-    m = OpenOracleMedianizer.deploy(p, 100 * 86400, {"from": a[0]})
+def main():
+    bandAdapter = accounts[0].deploy(BandAdapter, "0xDA7a001b254CD22e46d3eAB04d937489c93174C3")
+
+    chainlinkAdapter = accounts[0].deploy(ChainlinkAdapter)
+    chainlinkAdapter.setAggregators(
+        ["ETH", "COMP"],
+        ["0x5f4eC3Df9cbd43714FE2740f5E3616155c5b8419", "0xdbd020CAeF83eFd542f4De03e3cF0C28A4428bd5"],
+        {"from": accounts[0]},
+    )
+
+    keep3rAdapter = accounts[0].deploy(Keep3rAdapter, bandAdapter.address, chainlinkAdapter.address)
+    keep3rAdapter.setTokens(
+        ["COMP"],
+        ["0xc00e94Cb662C3520282E6f5717214004A7f26888"],
+        ["0x73353801921417f465377c8d898c6f4c0270282c"],
+        {"from": accounts[0]},
+    )
+
+    (bandTimestamp, bandPrice) = bandAdapter.getPrice("COMP")
+    (chainlinkTimestamp, chainlinkPrice) = chainlinkAdapter.getPrice("COMP")
+    (keep3rTimestamp, keep3rPrice) = keep3rAdapter.getPrice("COMP")
+
+    p = OpenOraclePriceData.deploy({"from": accounts[0]})
+    m = OpenOracleMedianizer.deploy(p, 100 * 86400, {"from": accounts[0]})
+
+    reporter = REPORTS[1]
     timestamp = chain.time()
-    for each in REPORTS:
-        messages = []
-        sigs = []
-        for symbol, price in each["prices"].items():
-            msg, sig = generate_signature(symbol, timestamp, price, each["private_key"])
-            messages.append(msg)
-            sigs.append(sig)
-        m.postSignedPrices(messages, sigs)
-    m.setReporter(REPORTS[0]["address"], 100)
-    assert m.repoterCount() == 1
-    assert m.price("BTC") == 39091900000
-    m.setReporter(REPORTS[1]["address"], 100)
-    m.setReporter(REPORTS[2]["address"], 100)
-    m.setReporter(REPORTS[3]["address"], 100)
-    m.setReporter(REPORTS[4]["address"], 100)
-    assert m.repoterCount() == 5
-    assert m.price("BTC") == 39093900000
-    m.setReporter(REPORTS[3]["address"], 500)
-    assert m.repoterCount() == 5
-    assert m.price("BTC") == 39094900000
-    m.setReporter(REPORTS[3]["address"], 0)
-    assert m.repoterCount() == 4
-    assert m.price("BTC") == 39092900000
 
+    msg, sig = generate_signature("COMP", timestamp, "445.87", reporter["private_key"])
+    m.setReporter(reporter["address"], 100, {"from": accounts[0]})
+    m.postSignedPrices([msg], [sig])
 
-# def test_generate_signature(a, OpenOraclePriceData):
-#     p = OpenOraclePriceData.deploy({"from": a[0]})
-#     msg, sig = generate_signature("BTC", "1613993483", "39091.900000", PRIVATE_KEYS[0])
-#     print(msg.hex(), sig.hex())
-#     assert False
+    m.setReporter(accounts[1], 100, {"from": accounts[0]})
+    m.postPrices(["COMP"], [timestamp], [447870000], {"from": accounts[1]})
+
+    m.setReporter(bandAdapter.address, 100, {"from": accounts[0]})
+    m.setReporter(chainlinkAdapter.address, 100, {"from": accounts[0]})
+    m.setReporter(keep3rAdapter.address, 100, {"from": accounts[0]})
+
+    print(
+        f"""
+    Manual Feed Price: 445870000
+    Manual2 Feed Price: 447870000
+    Band Price: {bandPrice}
+    Chainlink Price: {chainlinkPrice}
+    Keep3r Price: {keep3rPrice}
+    ---------------------------
+    Medianizer Price: {m.price("COMP")}
+    """
+    )
