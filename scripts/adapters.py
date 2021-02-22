@@ -117,8 +117,7 @@ def main():
     (chainlinkTimestamp, chainlinkPrice) = chainlinkAdapter.getPrice("COMP")
     (keep3rTimestamp, keep3rPrice) = keep3rAdapter.getPrice("COMP")
 
-    p = OpenOraclePriceData.deploy({"from": accounts[0]})
-    m = OpenOracleMedianizer.deploy(p, 100 * 86400, {"from": accounts[0]})
+    m = OpenOracleMedianizer.deploy(100 * 86400, {"from": accounts[0]})
 
     reporter = REPORTS[1]
     timestamp = chain.time()

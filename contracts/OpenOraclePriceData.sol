@@ -27,6 +27,11 @@ contract OpenOraclePriceData is OpenOracleData {
      *  This is private because dynamic mapping keys preclude auto-generated getters.
      */
     mapping(address => mapping(string => Datum)) private data;
+    address public medianizer;
+
+    constructor() public {
+        medianizer = msg.sender;
+    }
 
     /**
      * @notice Write a bunch of signed datum to the authenticated storage mapping
@@ -40,6 +45,7 @@ contract OpenOraclePriceData is OpenOracleData {
     }
 
     function putBySender(address source, uint64 timestamp, string memory key, uint64 value) external returns (string memory) {
+        require(msg.sender == medianizer, "putBySender must be called by medianizer");
         return putInternal(source, timestamp, key, value);
     }    
 

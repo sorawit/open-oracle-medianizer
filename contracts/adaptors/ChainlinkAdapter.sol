@@ -1,7 +1,4 @@
-// SPDX-License-Identifier: GPL-3.0
-// https://github.com/compound-finance/open-oracle/blob/master/contracts/OpenOracleData.sol
-
-pragma solidity ^0.6.10;
+pragma solidity 0.6.12;
 pragma experimental ABIEncoderV2;
 
 import "OpenZeppelin/openzeppelin-contracts@3.2.0/contracts/math/SafeMath.sol";
@@ -14,10 +11,6 @@ contract ChainlinkAdapter is Governable, IAdapter {
     AggregatorV3Interface internal priceFeed;
 
     mapping(string => address) public aggregators;
-
-    constructor() public {
-        __Governable__init();
-    }
 
     function setAggregators(
         string[] memory _symbols,

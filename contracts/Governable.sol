@@ -1,8 +1,6 @@
 pragma solidity ^0.6.10;
 
-import "OpenZeppelin/openzeppelin-contracts@3.2.0/contracts/proxy/Initializable.sol";
-
-contract Governable is Initializable {
+contract Governable {
     address public governor; // The current governor.
     address public pendingGovernor; // The address pending to become the governor once accepted.
 
@@ -12,7 +10,7 @@ contract Governable is Initializable {
     }
 
     /// @dev Initialize the bank smart contract, using msg.sender as the first governor.
-    function __Governable__init() internal initializer {
+    constructor() public {
         governor = msg.sender;
         pendingGovernor = address(0);
     }

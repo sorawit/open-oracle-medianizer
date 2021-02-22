@@ -1,7 +1,4 @@
-// SPDX-License-Identifier: GPL-3.0
-// https://github.com/compound-finance/open-oracle/blob/master/contracts/OpenOracleData.sol
-
-pragma solidity ^0.6.10;
+pragma solidity 0.6.12;
 pragma experimental ABIEncoderV2;
 
 import "OpenZeppelin/openzeppelin-contracts@3.2.0/contracts/math/SafeMath.sol";
@@ -20,7 +17,6 @@ contract Keep3rAdapter is Governable, IAdapter {
     mapping(string => address) public keepers;
 
     constructor(IAdapter _bandAdapter, IAdapter _chainlinkAdapter) public {
-        __Governable__init();
         chainlinkAdapter = _chainlinkAdapter;
         bandAdapter = _bandAdapter;
     }

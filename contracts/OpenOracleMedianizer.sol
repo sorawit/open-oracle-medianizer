@@ -5,22 +5,21 @@ import "OpenZeppelin/openzeppelin-contracts@3.2.0/contracts/math/SafeMath.sol";
 import "OpenZeppelin/openzeppelin-contracts@3.2.0/contracts/utils/Address.sol";
 import "./OpenOraclePriceData.sol";
 import "../interfaces/IAdapter.sol";
+import "./Governable.sol";
 
-contract OpenOracleMedianizer {
+contract OpenOracleMedianizer is Governable {
     using SafeMath for uint256;
     using Address for address;
 
-    address public governor;
-    address public pendingGovernor;
     uint256 public minStalePrice;
     OpenOraclePriceData public priceData;
 
     address[] public reporters;
     mapping(address => uint256) public weights;
 
-    constructor(OpenOraclePriceData _priceData, uint256 _minStalePrice) public {
+    constructor(uint256 _minStalePrice) public {
         governor = msg.sender;
-        priceData = _priceData;
+        priceData = new OpenOraclePriceData();
         minStalePrice = _minStalePrice;
     }
 
@@ -103,8 +102,7 @@ contract OpenOracleMedianizer {
         }
     }
 
-    function setReporter(address reporter, uint256 weight) external {
-        require(msg.sender == governor, "not-governor");
+    function setReporter(address reporter, uint256 weight) external onlyGov {
         uint256 reporterLength = reporters.length;
         for (uint256 i = 0; i < reporterLength; i++) {
             if (reporters[i] == reporter) {
@@ -121,24 +119,11 @@ contract OpenOracleMedianizer {
         weights[reporter] = weight;
     }
 
-    function setPriceData(OpenOraclePriceData _priceData) external {
-        require(msg.sender == governor, "not-governor");
+    function setPriceData(OpenOraclePriceData _priceData) external onlyGov {
         priceData = _priceData;
     }
 
-    function setMinStalePrice(uint256 _minStalePrice) external {
-        require(msg.sender == governor, "not-governor");
+    function setMinStalePrice(uint256 _minStalePrice) external onlyGov {
         minStalePrice = _minStalePrice;
-    }
-
-    function changeGovernor(address _pendingGovernor) external {
-        require(msg.sender == governor, "not-governor");
-        pendingGovernor = _pendingGovernor;
-    }
-
-    function acceptGovernor() external {
-        require(msg.sender == pendingGovernor, "not-pending-governor");
-        governor = msg.sender;
-        pendingGovernor = address(0);
     }
 }

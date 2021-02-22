@@ -1,7 +1,4 @@
-// SPDX-License-Identifier: GPL-3.0
-// https://github.com/compound-finance/open-oracle/blob/master/contracts/OpenOracleData.sol
-
-pragma solidity ^0.6.10;
+pragma solidity 0.6.12;
 pragma experimental ABIEncoderV2;
 
 import "../../interfaces/IAdapter.sol";
@@ -16,7 +13,6 @@ contract BandAdapter is Governable, IAdapter {
     }
 
     function setRef(IStdReference _ref) external onlyGov {
-        __Governable__init();
         ref = _ref;
     }
 
