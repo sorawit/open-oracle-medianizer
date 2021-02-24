@@ -102,7 +102,7 @@ contract OpenOracleMedianizer is Governable {
         }
     }
 
-    function setReporter(address reporter, uint256 weight) external onlyGov {
+    function setWeight(address reporter, uint256 weight) external onlyGov {
         uint256 reporterLength = reporters.length;
         for (uint256 i = 0; i < reporterLength; i++) {
             if (reporters[i] == reporter) {

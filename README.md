@@ -85,7 +85,7 @@ Transaction sent: 0x808d83f6827a6ca9c6672b54a1f1dd9c72be8c29f8d3711d66154f0a1280
 
 Transaction sent: 0x40f652e3e8d5f8a78a07ac95e2a712bbfcfed0bea253783b32ee26890902b6af
   Gas price: 0.0 gwei   Gas limit: 12000000   Nonce: 7
-  OpenOracleMedianizer.setReporter confirmed - Block: 11907941   Gas used: 40416 (0.34%)
+  OpenOracleMedianizer.setWeight confirmed - Block: 11907941   Gas used: 40416 (0.34%)
 
 Transaction sent: 0x969d8f212cca24a916af1cc555698cf00400eea7c88f047bac4a39aeed1de084
   Gas price: 0.0 gwei   Gas limit: 12000000   Nonce: 8
@@ -93,7 +93,7 @@ Transaction sent: 0x969d8f212cca24a916af1cc555698cf00400eea7c88f047bac4a39aeed1d
 
 Transaction sent: 0x0fa40dd6f2bd1fbb67fd755d6829ee5a28861618629cfa2ada660100a388f584
   Gas price: 0.0 gwei   Gas limit: 12000000   Nonce: 9
-  OpenOracleMedianizer.setReporter confirmed - Block: 11907943   Gas used: 42207 (0.35%)
+  OpenOracleMedianizer.setWeight confirmed - Block: 11907943   Gas used: 42207 (0.35%)
 
 Transaction sent: 0xfee886450338152fd0a62b85bf0418d194bc536c9e9044aae0ec0906473e0f3e
   Gas price: 0.0 gwei   Gas limit: 12000000   Nonce: 5
@@ -101,15 +101,15 @@ Transaction sent: 0xfee886450338152fd0a62b85bf0418d194bc536c9e9044aae0ec0906473e
 
 Transaction sent: 0x029fe710a7eb35d21fead28c436a6bfd62b8cd3d88f3c90b37fb426ac89a1819
   Gas price: 0.0 gwei   Gas limit: 12000000   Nonce: 10
-  OpenOracleMedianizer.setReporter confirmed - Block: 11907945   Gas used: 43998 (0.37%)
+  OpenOracleMedianizer.setWeight confirmed - Block: 11907945   Gas used: 43998 (0.37%)
 
 Transaction sent: 0x7971b4acc315e739d5651f227002d6a4b5e1ae875a2002c7d61764458f214680
   Gas price: 0.0 gwei   Gas limit: 12000000   Nonce: 11
-  OpenOracleMedianizer.setReporter confirmed - Block: 11907946   Gas used: 45777 (0.38%)
+  OpenOracleMedianizer.setWeight confirmed - Block: 11907946   Gas used: 45777 (0.38%)
 
 Transaction sent: 0x6ebd28c08cd36504d59f52c4364af55803bff6b77523fdc0663f481fe854c460
   Gas price: 0.0 gwei   Gas limit: 12000000   Nonce: 12
-  OpenOracleMedianizer.setReporter confirmed - Block: 11907947   Gas used: 47580 (0.40%)
+  OpenOracleMedianizer.setWeight confirmed - Block: 11907947   Gas used: 47580 (0.40%)
 
 
     Manual Feed Price: 445870000
