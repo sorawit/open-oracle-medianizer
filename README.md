@@ -13,6 +13,13 @@ The compound medianizer smart contract allows the Compound governance to set the
 
 Compound smart contracts can query for price data by invoking the medianizer's price routine, which is a public view function that takes a symbol string and returns the price value, multiplied by 1000000.
 
+## Supported Adapters
+
+- ✅ Compound [Open Price Feed](https://compound.finance/docs/prices) signed price data
+- ✅ [ChainLink](https://data.chain.link/) decentralized price reference data
+- ✅ [Keep3r Network (Uniquote)](https://feeds.uniquote.finance/) price data from [Uniswap](http://uniswap.org/) and [Sushiswap](https://sushiswap.fi/)
+- ✅ [Band Protocol](https://data.bandprotocol.com/) standard dataset
+
 ### Methods
 
 setWeight must be called by the Compound governance to set the median weight of the given reporter address. Setting weight to zero removes the reporter from the medianizer.
